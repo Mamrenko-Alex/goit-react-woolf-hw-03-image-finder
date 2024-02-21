@@ -1,46 +1,38 @@
 import React, { Component } from 'react';
 
 export class Modal extends Component {
-  state = {
-    isModalOpen: false,
-  };
-
   componentDidMount() {
     document.addEventListener('keydown', this.handleKeyDown);
+    document.addEventListener('click', this.handleOverlayClick);
+    document.body.style.overflow = 'hidden';
   }
 
   componentWillUnmount() {
     document.removeEventListener('keydown', this.handleKeyDown);
+    document.removeEventListener('click', this.handleOverlayClick);
+    document.body.style.overflow = 'auto';
   }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.isOpen !== this.props.isOpen) {
-      this.setState({ isModalOpen: this.props.isOpen });
-    }
-  }
-
-  handleCloseModal = () => {
-    this.setState({ isModalOpen: false });
-    this.props.onClose();
-  };
 
   handleKeyDown = event => {
-    if (event.key === 'Escape') {
-      this.handleCloseModal();
+    if (event.code === 'Escape') {
+      this.props.toggleModal();
+    }
+  };
+
+  handleOverlayClick = event => {
+    const overlay = document.querySelector('.overlay');
+    if (event.target === overlay) {
+      this.props.toggleModal();
     }
   };
 
   render() {
-    const { isModalOpen } = this.state;
-    const { isOpen, imageURL } = this.props;
+    const { imageUrl, description } = this.props;
 
     return (
-      <div
-        className={`overlay ${isModalOpen ? 'open' : ''}`}
-        onClick={this.handleCloseModal}
-      >
-        <div className="modal" onClick={e => e.stopPropagation()}>
-          <img src={imageURL} alt="" />
+      <div className="overlay" onClick={this.handleOverlayClick}>
+        <div className="modal">
+          <img src={imageUrl} alt={description} />
         </div>
       </div>
     );

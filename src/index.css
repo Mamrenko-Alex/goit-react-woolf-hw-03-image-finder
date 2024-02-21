@@ -140,18 +140,6 @@ img {
   font-size: 18px;
 }
 
-/*
- * Стили компонента ImageGallery
- */
-
-/*
- * Стили компонента ImageGalleryItem
- */
-
-/*
- * Стили компонента Modal
- */
-
 .overlay {
   position: fixed;
   top: 0;

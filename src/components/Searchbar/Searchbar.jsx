@@ -15,11 +15,22 @@ export class Searchbar extends Component {
     this.setState({ query: '' });
   };
 
+  scrollToElement() {
+    const element = document.querySelector('#image_gallery_js');
+    element.scrollIntoView({
+      behavior: 'smooth',
+    });
+  }
+
   render() {
     return (
       <header className="searchbar">
         <form className="form" onSubmit={this.handlerSubmit}>
-          <button type="submit" className="button">
+          <button
+            type="submit"
+            className="button"
+            onClick={this.scrollToElement}
+          >
             <span className="button-label">Search</span>
           </button>
 

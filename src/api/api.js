@@ -15,7 +15,7 @@ export const getImages = async (query, page = 1, perPage = 12) => {
         orientation: 'horizontal',
       },
     });
-    console.log(response.data);
+
     return response.data;
   } catch (error) {
     return error;

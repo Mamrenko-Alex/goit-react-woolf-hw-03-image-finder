@@ -11,26 +11,24 @@ export class Searchbar extends Component {
 
   handlerSubmit = event => {
     event.preventDefault();
+    if (this.state.query === '') {
+      return;
+    }
     this.props.onSubmit(this.state.query);
-    this.setState({ query: '' });
-  };
-
-  scrollToElement() {
-    const element = document.querySelector('#image_gallery_js');
+    this.setState({
+      query: '',
+    });
+    const element = document.querySelector('#js_anchor');
     element.scrollIntoView({
       behavior: 'smooth',
     });
-  }
+  };
 
   render() {
     return (
       <header className="searchbar">
         <form className="form" onSubmit={this.handlerSubmit}>
-          <button
-            type="submit"
-            className="button"
-            onClick={this.scrollToElement}
-          >
+          <button type="submit" className="button">
             <span className="button-label">Search</span>
           </button>
 

@@ -15,12 +15,12 @@ export class Searchbar extends Component {
       return;
     }
     this.props.onSubmit(this.state.query);
-    this.setState({
-      query: '',
-    });
     const element = document.querySelector('#js_anchor');
     element.scrollIntoView({
       behavior: 'smooth',
+    });
+    this.setState({
+      query: '',
     });
   };
 

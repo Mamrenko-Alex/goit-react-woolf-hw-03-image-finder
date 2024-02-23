@@ -18,43 +18,37 @@ export class App extends Component {
   async componentDidUpdate(prevProps, prevState) {
     const { currentPage, query, images } = this.state;
     const { currentPage: prevPage, query: prevQuery } = prevState;
-    let total;
 
-    if (images.length === 0) {
+    if (currentPage === prevPage && query === prevQuery) {
       return;
     }
-    if (currentPage !== prevPage || query !== prevQuery) {
-      try {
-        const { hits, totalHits } = await getImages(query, currentPage);
-        total = totalHits;
-        this.setState(prevState => ({
-          images: [...prevState.images, ...hits],
-        }));
-      } catch (error) {
-        this.setState({ error });
-      }
-    }
-    if (total <= images.length + 12) {
-      this.setState({ isMore: false });
-    }
-  }
-
-  handlerSearch = async query => {
-    if (query === '' || query === this.state.query) {
-      return;
-    }
-    this.setState({ query, isLoading: true, currentPage: 1, images: [] });
     try {
-      const { hits, totalHits } = await getImages(query);
-      this.setState({
-        images: [...hits],
-        isMore: totalHits > 12,
-      });
+      this.setState({ isLoading: true });
+      const { hits, totalHits } = await getImages(query, currentPage);
+
+      this.setState(prevState => ({
+        images: [...prevState.images, ...hits],
+        isMore: currentPage < Math.ceil(totalHits / 12),
+      }));
     } catch (error) {
       this.setState({ error });
     } finally {
       this.setState({ isLoading: false });
     }
+  }
+
+  handlerSearch = async query => {
+    if (query === this.state.query) {
+      return;
+    }
+    this.setState({
+      query,
+      images: [],
+      isLoading: false,
+      isMore: false,
+      error: null,
+      currentPage: 1,
+    });
   };
 
   handleLoadMore = () => {
